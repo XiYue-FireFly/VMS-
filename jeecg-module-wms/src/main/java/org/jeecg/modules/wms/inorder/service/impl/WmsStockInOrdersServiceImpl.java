@@ -3,6 +3,7 @@ package org.jeecg.modules.wms.inorder.service.impl;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.DateUtils;
 import org.jeecg.common.util.RedisUtil;
+import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.wms.config.WarehouseDictEnum;
 import org.jeecg.modules.wms.inorder.entity.WmsStockInOrders;
 import org.jeecg.modules.wms.inorder.entity.WmsStockInOrderItems;
@@ -10,6 +11,7 @@ import org.jeecg.modules.wms.inorder.mapper.WmsStockInOrderItemsMapper;
 import org.jeecg.modules.wms.inorder.mapper.WmsStockInOrdersMapper;
 import org.jeecg.modules.wms.inorder.service.IWmsStockInOrderItemsService;
 import org.jeecg.modules.wms.inorder.service.IWmsStockInOrdersService;
+import org.jeecg.modules.wms.inorder.vo.WmsStockInOrdersPage;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -193,5 +195,95 @@ public class WmsStockInOrdersServiceImpl extends ServiceImpl<WmsStockInOrdersMap
 		return orderNumber;
 
 	}
+	/**
+	 * 审核入库单
+	 * @param wmsStockInOrdersPage
+	 */
+	public void audit(WmsStockInOrdersPage wmsStockInOrdersPage){
+		//如果没有选择入库单则返回错误
+		if(oConvertUtils.isEmpty(wmsStockInOrdersPage.getId())){
+			//抛出异常
+			throw new JeecgBootException("请选择要审核的入库单");
+		}
+		WmsStockInOrders wmsStockInOrdersEntity = getById(wmsStockInOrdersPage.getId());
+		if(wmsStockInOrdersEntity==null) {
+			//异常
+			throw new JeecgBootException("入库单不存在");
+		}
 
+		//当前状态只能是提交审核状态
+		if(!WarehouseDictEnum.INBOUND_SUBMIT_AUDIT.getCode().equals(wmsStockInOrdersEntity.getStatus())){
+			//异常
+			throw new JeecgBootException("当前状态是提交审核状态方可进行审核");
+		}
+
+		//如果审核失败则更新状态
+		if(WarehouseDictEnum.INBOUND_REJECTED.getCode().equals(wmsStockInOrdersPage.getStatus())){
+			wmsStockInOrdersEntity.setStatus(wmsStockInOrdersPage.getStatus());
+			updateById(wmsStockInOrdersEntity);
+			return;
+		}
+		//入库单明细
+		List<WmsStockInOrderItems> wmsStockInOrderItemsList = wmsStockInOrderItemsService.selectByMainId(wmsStockInOrdersPage.getId());
+		if(wmsStockInOrderItemsList==null || wmsStockInOrderItemsList.size()<=0){
+			//异常
+			throw new JeecgBootException("请添加入库明细");
+		}
+		//更新状态为审核通过或审核不通过
+		wmsStockInOrdersEntity.setStatus(wmsStockInOrdersPage.getStatus());
+		updateById(wmsStockInOrdersEntity);
+	}
+	/**
+	 * 提交审核
+	 * @param wmsStockInOrdersPage
+	 */
+	public void submitAudit(WmsStockInOrdersPage wmsStockInOrdersPage){
+		//如果没有选择入库单则返回错误
+		if(wmsStockInOrdersPage==null || oConvertUtils.isEmpty(wmsStockInOrdersPage.getId())){
+			//抛出异常
+			throw new JeecgBootException("请选择要审核的入库单");
+		}
+		WmsStockInOrders wmsStockInOrdersEntity = getById(wmsStockInOrdersPage.getId());
+		if(wmsStockInOrdersEntity==null) {
+			//异常
+			throw new JeecgBootException("入库单不存在");
+		}
+		//当前状态只能是初始状态、审核失败状态
+		if(!(WarehouseDictEnum.INBOUND_INITIAL.getCode().equals(wmsStockInOrdersEntity.getStatus())
+				|| WarehouseDictEnum.INBOUND_REJECTED.getCode().equals(wmsStockInOrdersEntity.getStatus()))){
+			throw new JeecgBootException("非初始状态、审核失败状态入库单不允许审核");
+		}
+		//更新状态为提交审核
+		wmsStockInOrdersEntity.setStatus(WarehouseDictEnum.INBOUND_SUBMIT_AUDIT.getCode());
+		updateById(wmsStockInOrdersEntity);
+	}
+
+    @Override
+    public String updateReceivedStatus(String stockInOrderId) {
+
+		WmsStockInOrders stockInOrders = new WmsStockInOrders();
+		stockInOrders.setId(stockInOrderId);
+		//根据入库单id查询下边的明细
+		List<WmsStockInOrderItems> wmsStockInOrderItems = wmsStockInOrderItemsService.selectByMainId(stockInOrderId);
+		//统计明细中的收货总量(良品)及不良品总量
+		//统计良品数量
+		int goodQuantity = wmsStockInOrderItems.stream().mapToInt(WmsStockInOrderItems::getReceivedQuantity).sum();
+		stockInOrders.setTotalReceivedQuantity(goodQuantity);
+		//统计不良品数量
+		int badQuantity = wmsStockInOrderItems.stream().mapToInt(WmsStockInOrderItems::getDefectiveQuantity).sum();
+		stockInOrders.setTotalDefectiveQuantity(badQuantity);
+
+
+		//只要有一个明细的状态不是收货完成，则入库单的状态不是收货完成
+		boolean b = wmsStockInOrderItems.stream().anyMatch(wmsStockInOrderItems1 -> !WarehouseDictEnum.INBOUND_RECEIVED.getCode().equals(wmsStockInOrderItems1.getStatus()));
+
+		if(b){//未收货完成
+			stockInOrders.setStatus(WarehouseDictEnum.INBOUND_RECEIVING.getCode());
+
+		}else{//收货完成
+			stockInOrders.setStatus(WarehouseDictEnum.INBOUND_RECEIVED.getCode());
+		}
+		boolean b1 = updateById(stockInOrders);
+		return stockInOrders.getStatus();
+	}
 }

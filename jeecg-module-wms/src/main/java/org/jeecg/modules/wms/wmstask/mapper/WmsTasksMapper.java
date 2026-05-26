@@ -14,4 +14,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface WmsTasksMapper extends BaseMapper<WmsTasks> {
 
+    /**
+     * 任务列表
+     */
+    List<WmsTasks> queryTaskList(WmsTasks wmsTasks);
 }

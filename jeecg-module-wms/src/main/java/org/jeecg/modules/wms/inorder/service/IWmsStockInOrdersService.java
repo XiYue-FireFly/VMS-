@@ -3,6 +3,8 @@ package org.jeecg.modules.wms.inorder.service;
 import org.jeecg.modules.wms.inorder.entity.WmsStockInOrderItems;
 import org.jeecg.modules.wms.inorder.entity.WmsStockInOrders;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.jeecg.modules.wms.inorder.vo.WmsStockInOrdersPage;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -50,4 +52,23 @@ public interface IWmsStockInOrdersService extends IService<WmsStockInOrders> {
 	 * @param wmsStockInOrders
 	 */
     void add(WmsStockInOrders wmsStockInOrders);
+
+	/**
+	 * 审核入库单
+	 * @param wmsStockInOrdersPage
+	 */
+	void audit(WmsStockInOrdersPage wmsStockInOrdersPage);
+
+	/**
+	 * 提交审核
+	 * @param wmsStockInOrdersPage
+	 */
+	void submitAudit(WmsStockInOrdersPage wmsStockInOrdersPage);
+
+	/**
+	 * 更新收货完成状态
+	 * @param stockInOrderId 入库单id
+	 * @return 更新后的入库单状态
+	 */
+	String updateReceivedStatus(String stockInOrderId);
 }

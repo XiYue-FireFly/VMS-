@@ -266,4 +266,29 @@ public class WmsStockInOrdersController {
       return Result.OK("文件导入失败！");
     }
 
+	 /**
+	  * 提交审核
+	  */
+	 @AutoLog(value = "入库单主表-提交审核")
+	 @Operation(summary="入库单主表-提交审核")
+//	 @RequiresPermissions("inorder:wms_stock_in_orders:submitaudit")
+	 @PostMapping(value = "/submitAudit")
+	 public Result<String> submit(@RequestBody WmsStockInOrdersPage wmsStockInOrdersPage) {
+		 wmsStockInOrdersService.submitAudit(wmsStockInOrdersPage);
+		 return Result.OK("提交成功！");
+	 }
+	 /**
+	  *  审核
+	  *
+	  * @param wmsStockInOrdersPage
+	  * @return
+	  */
+	 @AutoLog(value = "入库单主表-审核")
+	 @Operation(summary="入库单主表-审核")
+	 @RequiresPermissions("inorder:wms_stock_in_orders:audit")
+	 @RequestMapping(value = "/audit", method = {RequestMethod.PUT,RequestMethod.POST})
+	 public Result<String> audit(@RequestBody WmsStockInOrdersPage wmsStockInOrdersPage) {
+		 wmsStockInOrdersService.audit(wmsStockInOrdersPage);
+		 return Result.OK("审核完成!");
+	 }
 }
