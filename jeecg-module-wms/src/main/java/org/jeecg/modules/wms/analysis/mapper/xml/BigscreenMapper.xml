@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.wms.analysis.mapper.BigScreenMapper">
+    <select id="countTaskList"
+            parameterType="org.jeecg.modules.wms.wmstask.entity.WmsTasks"
+            resultType="org.jeecg.modules.wms.wmstask.entity.WmsTasks">
+        select t.task_type, count(1) taskCount
+        from wms_tasks t
+        where 1=1
+        <!--根据任务状态查询-->
+        <if test="taskStatus != null and taskStatus!=''">
+            and t.task_status = #{taskStatus}
+        </if>
+        <!--根据来源仓库查询-->
+        <if test="sourceWarehouseId != null and sourceWarehouseId!=''">
+            and t.source_warehouse_id = #{sourceWarehouseId}
+        </if>
+        <!--根据目标仓库查询-->
+        <if test="targetWarehouseId != null and targetWarehouseId!=''">
+            and t.target_warehouse_id = #{targetWarehouseId}
+        </if>
+        <if test="createTimeString != null and createTimeString!=''">
+            and date (t.create_time) = #{createTimeString}
+        </if>
+        group by t.task_type
+
+    </select>
+</mapper>
