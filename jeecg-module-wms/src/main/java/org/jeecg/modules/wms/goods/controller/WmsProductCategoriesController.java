@@ -152,7 +152,7 @@ public class WmsProductCategoriesController extends JeecgController<WmsProductCa
 	 }
 
 	 /**
-      * 获取子数据
+      * 获取子数据 在查询列表点击分类前边的加号 列出下级分类
       * @param wmsProductCategories
       * @param req
       * @return
@@ -192,7 +192,7 @@ public class WmsProductCategoriesController extends JeecgController<WmsProductCa
             return Result.error("批量查询子节点失败：" + e.getMessage());
         }
     }
-	
+
 	/**
 	 *   添加
 	 *
@@ -207,7 +207,7 @@ public class WmsProductCategoriesController extends JeecgController<WmsProductCa
 		wmsProductCategoriesService.addWmsProductCategories(wmsProductCategories);
 		return Result.OK("添加成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -222,7 +222,7 @@ public class WmsProductCategoriesController extends JeecgController<WmsProductCa
 		wmsProductCategoriesService.updateWmsProductCategories(wmsProductCategories);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -237,7 +237,7 @@ public class WmsProductCategoriesController extends JeecgController<WmsProductCa
 		wmsProductCategoriesService.deleteWmsProductCategories(id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -252,7 +252,7 @@ public class WmsProductCategoriesController extends JeecgController<WmsProductCa
 		this.wmsProductCategoriesService.removeByIds(Arrays.asList(ids.split(",")));
 		return Result.OK("批量删除成功！");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
