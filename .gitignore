@@ -13,3 +13,10 @@ os_del.cmd
 os_del_doc.cmd
 .svn
 derby.log
+
+## sensitive files - NEVER commit these
+*.ymlbackup
+*.propertiesbackup
+*.env
+*.env.*
+**/application-local.yml
