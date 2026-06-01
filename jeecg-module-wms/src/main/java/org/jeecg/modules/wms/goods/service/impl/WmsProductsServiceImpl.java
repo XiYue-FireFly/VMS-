@@ -2,14 +2,17 @@ package org.jeecg.modules.wms.goods.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.modules.wms.goods.entity.WmsProductImages;
 import org.jeecg.modules.wms.goods.entity.WmsProducts;
+import org.jeecg.modules.wms.goods.excel.WmsProductsImport;
 import org.jeecg.modules.wms.goods.mapper.WmsProductsMapper;
 import org.jeecg.modules.wms.goods.service.IWmsCargoOwnersService;
 import org.jeecg.modules.wms.goods.service.IWmsProductCategoriesService;
 import org.jeecg.modules.wms.goods.service.IWmsProductImagesService;
 import org.jeecg.modules.wms.goods.service.IWmsProductsService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -137,5 +140,15 @@ public class WmsProductsServiceImpl extends ServiceImpl<WmsProductsMapper, WmsPr
         return code;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void importProduct(List<WmsProductsImport> list) {
+        for (WmsProductsImport importItem : list) {
+            WmsProducts wmsProducts = new WmsProducts();
+            BeanUtils.copyProperties(importItem, wmsProducts);
+            // 保存商品
+            save(wmsProducts);
+        }
+    }
 
 }

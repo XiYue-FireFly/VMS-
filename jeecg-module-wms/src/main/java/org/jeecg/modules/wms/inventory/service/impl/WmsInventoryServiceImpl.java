@@ -5,9 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.jeecg.modules.wms.inventory.entity.WmsInventory;
 import org.jeecg.modules.wms.inventory.mapper.WmsInventoryMapper;
 import org.jeecg.modules.wms.inventory.service.IWmsInventoryService;
+import org.jeecg.modules.wms.outorder.entity.WmsOutOrdersItems;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import java.util.List;
 
 /**
  * @Description: 库存表
@@ -27,5 +30,16 @@ public class WmsInventoryServiceImpl extends ServiceImpl<WmsInventoryMapper, Wms
                 .eq(StringUtils.isNotEmpty(batchNumber), WmsInventory::getBatchNumber, batchNumber)
                 .eq(StringUtils.isEmpty(batchNumber), WmsInventory::getBatchNumber, "");
         return this.getOne(eq);
+    }
+
+    @Override
+    public List<WmsInventory> selectAvailableBySku(String warehouseId, WmsOutOrdersItems item) {
+        LambdaQueryWrapper<WmsInventory> queryWrapper = new LambdaQueryWrapper<WmsInventory>()
+                .eq(WmsInventory::getWarehouseId, warehouseId)
+                .eq(WmsInventory::getProductId, item.getSkuId())
+                .gt(WmsInventory::getAvailableQuantity, 0)
+                .orderByAsc(WmsInventory::getExpiryDate)
+                .orderByAsc(WmsInventory::getCreateTime);
+        return this.list(queryWrapper);
     }
 }

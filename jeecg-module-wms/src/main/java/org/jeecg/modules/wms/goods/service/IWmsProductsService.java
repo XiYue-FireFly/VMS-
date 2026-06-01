@@ -1,7 +1,10 @@
 package org.jeecg.modules.wms.goods.service;
 
 import org.jeecg.modules.wms.goods.entity.WmsProducts;
+import org.jeecg.modules.wms.goods.excel.WmsProductsImport;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * @Description: 商品信息表
@@ -20,5 +23,10 @@ public interface IWmsProductsService extends IService<WmsProducts> {
      * 修改商品
      */
     void edit(WmsProducts wmsProducts);
+
+    /**
+     * 导入商品
+     */
+    void importProduct(List<WmsProductsImport> list);
 
 }

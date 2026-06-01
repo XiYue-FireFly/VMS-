@@ -22,7 +22,6 @@ import org.jeecg.modules.wms.outorder.service.IWmsOutOrdersItemsService;
 import org.jeecg.modules.wms.outorder.service.IWmsOutOrdersService;
 import org.jeecg.modules.wms.shipment.entity.WmsShipment;
 import org.jeecg.modules.wms.shipment.entity.WmsShipmentDetail;
-import org.jeecg.modules.wms.waybill.service.IWmsSfService;
 import org.jeecg.modules.wms.wave.entity.WmsWaveMaster;
 import org.jeecg.modules.wms.shipment.mapper.WmsShipmentDetailMapper;
 import org.jeecg.modules.wms.shipment.mapper.WmsShipmentMapper;

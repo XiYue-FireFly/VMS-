@@ -128,6 +128,10 @@ public class WmsTasks implements Serializable {
 	@Excel(name = "批次号", width = 15)
     @Schema(description = "批次号")
     private String batchNumber;
+	/**任务数量(统计用)*/
+	@TableField(exist = false)
+    @Schema(description = "任务数量")
+    private Integer taskCount;
 	/**保质期*/
 	@Excel(name = "保质期", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")

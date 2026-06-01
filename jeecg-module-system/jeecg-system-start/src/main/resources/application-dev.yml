@@ -111,6 +111,7 @@ spring:
     exclude:
       - com.alibaba.druid.spring.boot3.autoconfigure.DruidDataSourceAutoConfigure
       - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
+      - org.redisson.spring.starter.RedissonAutoConfiguration
   datasource:
     druid:
       stat-view-servlet:
@@ -153,7 +154,7 @@ spring:
         master:
           url: jdbc:mysql://127.0.0.1:3306/xingchenwms?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
           username: root
-          password: mysql
+          password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
           # 多数据源配置
           #multi-datasource1:
@@ -167,6 +168,7 @@ spring:
       database: 0
       host: 127.0.0.1
       port: 6379
+      client-type: lettuce
 #      password:
 #mybatis plus 设置
 mybatis-plus:
@@ -201,8 +203,8 @@ jeecg:
       host: 127.0.0.1
       port: 5432
       database: postgres
-      user: postgres
-      password: postgres
+      user: FireFly
+      password: 123456
       table: embeddings
   # 平台上线安全配置
   firewall:
