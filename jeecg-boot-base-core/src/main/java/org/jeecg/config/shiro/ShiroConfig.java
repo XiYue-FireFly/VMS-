@@ -48,7 +48,7 @@ import java.util.*;
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class ShiroConfig {
 
-    @Resource
+    @Autowired(required = false)
     private LettuceConnectionFactory lettuceConnectionFactory;
     @Autowired
     private Environment env;
@@ -321,33 +321,49 @@ public class ShiroConfig {
             return sentinelManager;
         }
 
-        // redis 单机支持，在集群为空，或者集群无机器时候使用 add by jzyadmin@163.com
-        if (lettuceConnectionFactory.getClusterConfiguration() == null || lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().isEmpty()) {
+        // 如果 LettuceConnectionFactory 可用，使用它获取连接信息
+        if (lettuceConnectionFactory != null) {
+            // redis 单机支持，在集群为空，或者集群无机器时候使用 add by jzyadmin@163.com
+            if (lettuceConnectionFactory.getClusterConfiguration() == null || lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().isEmpty()) {
+                RedisManager redisManager = new RedisManager();
+                redisManager.setHost(lettuceConnectionFactory.getHostName() + ":" + lettuceConnectionFactory.getPort());
+                //(lettuceConnectionFactory.getPort());
+                redisManager.setDatabase(lettuceConnectionFactory.getDatabase());
+                redisManager.setTimeout(0);
+                if (!StringUtils.isEmpty(lettuceConnectionFactory.getPassword())) {
+                    redisManager.setPassword(lettuceConnectionFactory.getPassword());
+                }
+                manager = redisManager;
+            }else{
+                // redis集群支持，优先使用集群配置
+                RedisClusterManager redisManager = new RedisClusterManager();
+                Set<HostAndPort> portSet = new HashSet<>();
+                lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().forEach(node -> portSet.add(new HostAndPort(node.getHost() , node.getPort())));
+                //update-begin--Author:scott Date:20210531 for：修改集群模式下未设置redis密码的bug issues/I3QNIC
+                if (oConvertUtils.isNotEmpty(lettuceConnectionFactory.getPassword())) {
+                    JedisCluster jedisCluster = new JedisCluster(portSet, 2000, 2000, 5,
+                        lettuceConnectionFactory.getPassword(), new GenericObjectPoolConfig());
+                    redisManager.setPassword(lettuceConnectionFactory.getPassword());
+                    redisManager.setJedisCluster(jedisCluster);
+                } else {
+                    JedisCluster jedisCluster = new JedisCluster(portSet);
+                    redisManager.setJedisCluster(jedisCluster);
+                }
+                //update-end--Author:scott Date:20210531 for：修改集群模式下未设置redis密码的bug issues/I3QNIC
+                manager = redisManager;
+            }
+        } else {
+            // 使用 RedisProperties 直接配置（兼容 Redisson）
             RedisManager redisManager = new RedisManager();
-            redisManager.setHost(lettuceConnectionFactory.getHostName() + ":" + lettuceConnectionFactory.getPort());
-            //(lettuceConnectionFactory.getPort());
-            redisManager.setDatabase(lettuceConnectionFactory.getDatabase());
+            String host = redisProperties != null ? redisProperties.getHost() : "127.0.0.1";
+            int port = redisProperties != null ? redisProperties.getPort() : 6379;
+            int database = redisProperties != null ? redisProperties.getDatabase() : 0;
+            redisManager.setHost(host + ":" + port);
+            redisManager.setDatabase(database);
             redisManager.setTimeout(0);
-            if (!StringUtils.isEmpty(lettuceConnectionFactory.getPassword())) {
-                redisManager.setPassword(lettuceConnectionFactory.getPassword());
+            if (redisProperties != null && !StringUtils.isEmpty(redisProperties.getPassword())) {
+                redisManager.setPassword(redisProperties.getPassword());
             }
-            manager = redisManager;
-        }else{
-            // redis集群支持，优先使用集群配置
-            RedisClusterManager redisManager = new RedisClusterManager();
-            Set<HostAndPort> portSet = new HashSet<>();
-            lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().forEach(node -> portSet.add(new HostAndPort(node.getHost() , node.getPort())));
-            //update-begin--Author:scott Date:20210531 for：修改集群模式下未设置redis密码的bug issues/I3QNIC
-            if (oConvertUtils.isNotEmpty(lettuceConnectionFactory.getPassword())) {
-                JedisCluster jedisCluster = new JedisCluster(portSet, 2000, 2000, 5,
-                    lettuceConnectionFactory.getPassword(), new GenericObjectPoolConfig());
-                redisManager.setPassword(lettuceConnectionFactory.getPassword());
-                redisManager.setJedisCluster(jedisCluster);
-            } else {
-                JedisCluster jedisCluster = new JedisCluster(portSet);
-                redisManager.setJedisCluster(jedisCluster);
-            }
-            //update-end--Author:scott Date:20210531 for：修改集群模式下未设置redis密码的bug issues/I3QNIC
             manager = redisManager;
         }
         return manager;

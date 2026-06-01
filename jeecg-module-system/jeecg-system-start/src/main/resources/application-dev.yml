@@ -111,6 +111,7 @@ spring:
     exclude:
       - com.alibaba.druid.spring.boot3.autoconfigure.DruidDataSourceAutoConfigure
       - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
+      - org.redisson.spring.starter.RedissonAutoConfiguration
   datasource:
     druid:
       stat-view-servlet:
@@ -153,7 +154,7 @@ spring:
         master:
           url: jdbc:mysql://127.0.0.1:3306/xingchenwms?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
           username: root
-          password: mysql
+          password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
           # 多数据源配置
           #multi-datasource1:
@@ -167,6 +168,7 @@ spring:
       database: 0
       host: 127.0.0.1
       port: 6379
+      client-type: lettuce
 #      password:
 #mybatis plus 设置
 mybatis-plus:
@@ -181,7 +183,7 @@ mybatis-plus:
       table-underline: true
   configuration:
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
-    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # 返回类型为Map,显示null对应的字段
     call-setters-on-nulls: true
 #jeecg专用配置
@@ -201,8 +203,8 @@ jeecg:
       host: 127.0.0.1
       port: 5432
       database: postgres
-      user: postgres
-      password: postgres
+      user: FireFly
+      password: 123456
       table: embeddings
   # 平台上线安全配置
   firewall:
@@ -215,7 +217,7 @@ jeecg:
   #签名拦截接口
   signUrls: /sys/dict/getDictItems/*,/sys/dict/loadDict/*,/sys/dict/loadDictOrderByValue/*,/sys/dict/loadDictItem/*,/sys/dict/loadTreeData,/sys/api/queryTableDictItemsByCode,/sys/api/queryFilterTableDictInfo,/sys/api/queryTableDictByKeys,/sys/api/translateDictFromTable,/sys/api/translateDictFromTableByKeys,/sys/sendChangePwdSms,/sys/user/sendChangePhoneSms,/sys/sms,/desform/api/sendVerifyCode
   # 本地：local、Minio：minio、阿里云：alioss
-  uploadType: local
+  uploadType: alioss
   # 前端访问地址
   domainUrl:
     pc: http://localhost:3100
@@ -229,10 +231,10 @@ jeecg:
     excludeUrls: /test/jeecgDemo/demo3,/test/jeecgDemo/redisDemo/**,/bigscreen/category/**,/bigscreen/visual/**,/bigscreen/map/**,/jmreport/bigscreen2/**
   #阿里云oss存储和大鱼短信秘钥配置
   oss:
-    accessKey: ??
-    secretKey: ??
-    endpoint: oss-cn-beijing.aliyuncs.com
-    bucketName: jeecgdev
+    accessKey: your-access-key-id
+    secretKey: your-access-key-secret
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    bucketName: your-bucket-name
     # 短信模板
     sms-template:
       # 签名
@@ -293,7 +295,8 @@ logging:
   level:
     org.springframework.context.support.PostProcessorRegistrationDelegate: error
     org.flywaydb: debug
-    org.jeecg.modules.system.mapper: info
+    org.jeecg.modules.system.mapper: debug
+
 knife4j:
   #开启增强配置
   enable: true

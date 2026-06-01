@@ -29,7 +29,6 @@
             <artifactId>jeecg-module-wms</artifactId>
             <version>${jeecgboot.version}</version>
         </dependency>
-
         <!-- flyway 数据库自动升级
         <dependency>
             <groupId>org.flywaydb</groupId>
@@ -46,6 +45,12 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
+
+        <!-- Lettuce Redis 客户端 -->
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
         </dependency>
     </dependencies>
 

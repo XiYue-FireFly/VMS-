@@ -1,165 +1,211 @@
+# XingChen WMS - 仓储管理系统
 
-JeecgBoot 低代码开发平台
-===============
+基于 JeecgBoot 3.8.1 低代码开发平台构建的仓储管理系统（WMS）Java 项目。
+### 项目组成
 
-当前最新版本： 3.8.0（发布日期：2025-05-16） 
+| 项目名 | 说明 |
+|--------|------|
+| `xincheng-wms-java-course` | 后端源码（SpringBoot 架构） |
+| `jeecgboot-vue3` | 前端源码（Vue3 + Vite5 + TypeScript） |
 
+## 技术架构
 
-[![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
-[![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://jeecg.com/aboutusIndex)
-[![](https://img.shields.io/badge/version-3.8.0-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
-[![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/jeecg-boot.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
-[![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/jeecg-boot.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
+### 后端技术栈
 
+| 分类 | 技术 |
+|------|------|
+| 基础框架 | Spring Boot 3.4.5 |
+| 微服务框架 | Spring Cloud Alibaba 2023.0.3.2 |
+| 持久层 | MyBatis-Plus 3.5.12 |
+| 安全框架 | Apache Shiro 2.0.4 + JWT 4.5.0 |
+| 数据库 | MySQL 8.0+（支持 PostgreSQL、Oracle、达梦等） |
+| 缓存 | Redis 5.0+ |
+| 连接池 | Druid 1.2.24 |
+| Java 版本 | JDK 17 |
 
+### 前端技术栈
 
-项目介绍
------------------------------------
+- Vue 3.0 + TypeScript + Vite 5
+- Ant Design Vue 4 + Pinia
+- 动态菜单、权限校验、按钮级别权限控制
 
-<h3 align="center">Java Low Code Platform for Enterprise web applications</h3>
+### 数据库支持
 
-JeecgBoot 是一款基于代码生成器的`低代码开发平台`！前后端分离架构 SpringBoot2.x和3.x，SpringCloud，Ant Design Vue3，Mybatis-plus，Shiro，JWT，支持微服务。强大的代码生成器让前后端代码一键生成，实现低代码开发!  JeecgBoot 引领新的低代码开发模式(OnlineCoding-> 代码生成器-> 手工MERGE)， 帮助解决Java项目70%的重复工作，让开发更多关注业务。既能快速提高效率，节省研发成本，同时又不失灵活性！
+| 数据库 | 支持 |
+|--------|------|
+| MySQL | √ |
+| PostgreSQL | √ |
+| Oracle 11g | √ |
+| SQL Server 2017 | √ |
+| 达梦 | √ |
+| 人大金仓 | √ |
 
+## 项目结构
 
-#### 项目说明
-
-| 项目名                | 说明                     | 
-|--------------------|------------------------|
-| `jeecg-boot`    | 后端源码JAVA（SpringBoot微服务架构）        |
-| `jeecgboot-vue3` | 前端源码VUE3（vue3+vite5+ts最新技术栈）  |
-
-
-
-技术文档
------------------------------------
-
-- 官方网站：  [http://www.jeecg.com](http://www.jeecg.com)
-- 新手指南： [快速入门](http://www.jeecg.com/doc/quickstart)
-- QQ交流群 ： ⑩716488839、⑨808791225、其他(满)
-- 在线演示 ：  [在线演示](http://boot3.jeecg.com)   | [APP演示](http://jeecg.com/appIndex)
-> 演示系统的登录账号密码，请点击 [获取账号密码](http://jeecg.com/doc/demo) 获取 
-
-
-
-启动项目
------------------------------------
-
-- [IDEA启动前后端项目](https://help.jeecg.com/java/setup/idea/startup)
-- [Docker一键启动前后端](https://help.jeecg.com/java/docker/quick)
-
-
-微服务启动
------------------------------------
-- [单体快速切换微服务](https://help.jeecg.com/java/springcloud/switchcloud/monomer)
-- [Docker启动微服务后台](https://help.jeecg.com/java/docker/springcloud)
-
-
-
-技术架构：
------------------------------------
-
-#### 后端
-
-- IDE建议： IDEA (必须安装lombok插件 )
-- 语言：Java 8+ (支持17)
-- 依赖管理：Maven
-- 基础框架：Spring Boot 2.7.18
-- 微服务框架： Spring Cloud Alibaba 2021.0.1.0
-- 持久层框架：MybatisPlus 3.5.3.2
-- 报表工具： JimuReport 1.9.4
-- 安全框架：Apache Shiro 1.12.0，Jwt 3.11.0
-- 微服务技术栈：Spring Cloud Alibaba、Nacos、Gateway、Sentinel、Skywalking
-- 数据库连接池：阿里巴巴Druid 1.1.24
-- 日志打印：logback
-- 缓存：Redis
-- 其他：autopoi, fastjson，poi，Swagger-ui，quartz, lombok（简化代码）等。
-- 默认数据库脚本：MySQL5.7+
-- [其他数据库，需要自己转](https://my.oschina.net/jeecg/blog/4905722)
-
-
-#### 前端
-
-- 前端IDE建议：WebStorm、Vscode
-- 采用 Vue3.0+TypeScript+Vite+Ant-Design-Vue等新技术方案，包括二次封装组件、utils、hooks、动态菜单、权限校验、按钮级别权限控制等功能
-- 最新技术栈：Vue3.0 + TypeScript + Vite5 + ant-design-vue4 + pinia + echarts + unocss + vxe-table + qiankun + es6
-- 依赖管理：node、npm、pnpm
-
-
-
-#### 支持库
-
-|  数据库   |  支持   |
-| --- | --- |
-|   MySQL   |  √   |
-|  Oracle11g   |  √   |
-|  Sqlserver2017   |  √   |
-|   PostgreSQL   |  √   |
-|   MariaDB   |  √   |
-|   达梦   |  √   |
-|   人大金仓   |  √   |
-|   TiDB   |  √   |
-
-
-
- 
-## 微服务解决方案
-
-
-- 1、服务注册和发现 Nacos √
-- 2、统一配置中心 Nacos  √
-- 3、路由网关 gateway(三种加载方式) √
-- 4、分布式 http feign √
-- 5、熔断降级限流 Sentinel √
-- 6、分布式文件 Minio、阿里OSS √ 
-- 7、统一权限控制 JWT + Shiro √
-- 8、服务监控 SpringBootAdmin√
-- 9、链路跟踪 Skywalking   [参考文档](https://help.jeecg.com/java/springcloud/super/skywarking)
-- 10、消息中间件 RabbitMQ  √
-- 11、分布式任务 xxl-job  √ 
-- 12、分布式事务 Seata
-- 13、轻量分布式日志 Loki+grafana套件
-- 14、支持 docker-compose、k8s、jenkins
-- 15、CAS 单点登录   √
-- 16、路由限流   √
-
-
-
-后台目录结构
------------------------------------
 ```
-项目结构
-├─jeecg-boot-parent（父POM： 项目依赖、modules组织）
-│  ├─jeecg-boot-base-core（共通模块： 工具类、config、权限、查询过滤器、注解等）
-│  ├─jeecg-module-demo    示例代码
-│  ├─jeecg-module-system  System系统管理目录
-│  │  ├─jeecg-system-biz    System系统管理权限等功能
-│  │  ├─jeecg-system-start  System单体启动项目(8080）
-│  │  ├─jeecg-system-api    System系统管理模块对外api
-│  │  │  ├─jeecg-system-cloud-api   System模块对外提供的微服务接口
-│  │  │  ├─jeecg-system-local-api   System模块对外提供的单体接口
-│  ├─jeecg-server-cloud           --微服务模块
-     ├─jeecg-cloud-gateway       --微服务网关模块(9999)
-     ├─jeecg-cloud-nacos       --Nacos服务模块(8848)
-     ├─jeecg-system-cloud-start  --System微服务启动项目(7001)
-     ├─jeecg-demo-cloud-start    --Demo微服务启动项目(7002)
-     ├─jeecg-visual
-        ├─jeecg-cloud-monitor       --微服务监控模块 (9111)
-        ├─jeecg-cloud-xxljob        --微服务xxljob定时任务服务端 (9080)
-        ├─jeecg-cloud-sentinel     --sentinel服务端 (9000)
-        ├─jeecg-cloud-test           -- 微服务测试示例（各种例子）
-           ├─jeecg-cloud-test-more         -- 微服务测试示例（feign、熔断降级、xxljob、分布式锁）
-           ├─jeecg-cloud-test-rabbitmq     -- 微服务测试示例（rabbitmq）
-           ├─jeecg-cloud-test-seata          -- 微服务测试示例（seata分布式事务）
-           ├─jeecg-cloud-test-shardingsphere    -- 微服务测试示例（分库分表）
+xincheng-wms-java-course/
+├── jeecg-boot-base-core/              # 核心模块（工具类、配置、权限、查询过滤器）
+├── jeecg-boot-module/                 # 业务模块
+│   └── jeecg-module-demo/             # 示例代码
+├── jeecg-module-system/               # 系统管理模块
+│   ├── jeecg-system-api/              # 系统API接口
+│   │   ├── jeecg-system-cloud-api/    # 微服务接口
+│   │   └── jeecg-system-local-api/    # 单体接口
+│   ├── jeecg-system-biz/              # 系统业务逻辑
+│   └── jeecg-system-start/            # 单体启动项目（端口：8080）
+├── jeecg-module-wms/                  # WMS 仓储管理模块
+├── jeecg-server-cloud/                # 微服务模块
+│   ├── jeecg-cloud-gateway/           # 网关（端口：9999）
+│   ├── jeecg-cloud-nacos/             # Nacos 注册中心（端口：8848）
+│   ├── jeecg-system-cloud-start/      # System 微服务启动（端口：7001）
+│   └── jeecg-visual/                  # 可视化工具
+│       ├── jeecg-cloud-monitor/       # 微服务监控（端口：9111）
+│       ├── jeecg-cloud-xxljob/        # 定时任务（端口：9080）
+│       └── jeecg-cloud-sentinel/      # 流量控制（端口：9000）
+├── db/                                # 数据库脚本
+├── docker-compose.yml                 # Docker 部署配置
+└── pom.xml                            # Maven 父 POM
 ```
 
+## 快速启动
 
+### 方式一：本地开发环境
 
+#### 环境要求
+- JDK 17+
+- Maven 3.6+
+- MySQL 8.0+
+- Redis 5.0+
+- Node.js 16+（前端开发）
 
-#### 微服务架构图
-![微服务架构图](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/jeecgboot_springcloud2022.png "在这里输入图片标题")
+#### 1. 初始化数据库
 
+```sql
+CREATE DATABASE xingchenwms DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+```
 
+导入数据脚本：
+```bash
+mysql -u root -p xingchenwms < db/xingchenwms-20250912.sql
+mysql -u root -p xingchenwms < db/xingchenwms-20251114.sql
+```
 
+#### 2. 修改配置
 
+编辑 `jeecg-module-system/jeecg-system-start/src/main/resources/application.yml`：
 
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/xingchenwms?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+    username: root
+    password: your_password
+  redis:
+    host: localhost
+    port: 6379
+```
+
+#### 3. 启动后端
+
+```bash
+# 编译项目
+mvn clean install -DskipTests
+
+# 启动系统模块
+cd jeecg-module-system/jeecg-system-start
+mvn spring-boot:run
+```
+
+#### 4. 启动前端
+
+```bash
+# 克隆前端项目
+git clone https://github.com/jeecgboot/jeecgboot-vue3.git
+cd jeecgboot-vue3
+
+# 安装依赖并启动
+npm install
+npm run dev
+```
+
+启动后访问：
+- 后端 API：http://localhost:8080/jeecg-boot
+- 前端界面：http://localhost:3000
+- 默认账号：`admin` / `123456`
+
+### 方式二：Docker 部署
+
+```bash
+docker-compose up -d
+```
+
+包含服务：MySQL、Redis、System 应用
+
+## 微服务模式
+
+### 启动步骤
+
+```bash
+# 1. 启动 Nacos 注册中心
+cd jeecg-server-cloud/jeecg-cloud-nacos
+mvn spring-boot:run
+
+# 2. 启动网关
+cd jeecg-server-cloud/jeecg-cloud-gateway
+mvn spring-boot:run
+
+# 3. 启动业务服务
+cd jeecg-server-cloud/jeecg-system-cloud-start
+mvn spring-boot:run
+```
+
+### 微服务组件
+
+| 组件 | 说明 |
+|------|------|
+| Nacos | 服务注册发现 + 配置中心 |
+| Gateway | 路由网关（三种加载方式） |
+| Sentinel | 熔断降级限流 |
+| Seata | 分布式事务 |
+| Skywalking | 链路跟踪 |
+| RabbitMQ | 消息中间件 |
+| XXL-Job | 分布式任务调度 |
+| MinIO | 分布式文件存储 |
+
+### 微服务架构图
+
+![微服务架构图](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/jeecgboot_springcloud2022.png)
+
+## WMS 功能模块
+
+- **仓库管理**：仓库信息维护、库区划分
+- **库位管理**：库位编码、容量管理
+- **库存管理**：实时库存查询、库存预警
+- **入库管理**：采购入库、生产入库、退货入库
+- **出库管理**：销售出库、生产领料
+- **库存盘点**：盘点任务、差异处理
+
+## 开发指南
+
+### 代码生成器
+
+1. 登录后台 → 在线开发 → 代码生成器
+2. 选择数据表 → 配置生成策略
+3. 一键生成前后端代码
+
+### SQL 脚本规范
+
+| 类型 | 前缀 | 说明 |
+|------|------|------|
+| 增量脚本 | `V` | 仅执行一次，如 `V20240104_1__wms_add_table.sql` |
+| 重复脚本 | `R` | 内容变化时执行，如 `R__init_data.sql` |
+
+## 相关资源
+
+- [JeecgBoot 官方文档](http://www.jeecg.com)
+- [快速入门指南](http://www.jeecg.com/doc/quickstart)
+- [在线演示](http://boot3.jeecg.com)
+
+## 许可证
+
+[Apache License 2.0](LICENSE)
